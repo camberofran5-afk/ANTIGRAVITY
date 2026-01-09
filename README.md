@@ -1,5 +1,7 @@
 # Antigravity System Architecture
 
+> **🚀 NEW WORKSPACE?** Start here: [`START_HERE.md`](START_HERE.md) | Quick Reference: [`QUICK_REFERENCE.md`](QUICK_REFERENCE.md)
+
 ## 🧠 The Philosophy: Vibe Coding
 
 This system operates on the **"DO" Framework** (Directive → Orchestration → Execution):
