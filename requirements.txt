@@ -26,3 +26,10 @@ mypy>=1.7.0
 # LLM Clients
 google-generativeai>=0.3.0
 openai>=1.0.0
+
+# Agent Frameworks
+phidata>=2.0.0  # Agno (formerly Phidata)
+playwright>=1.40.0  # For OpenManus browser automation
+
+# MCP Support
+mcp>=0.1.0  # Model Context Protocol
