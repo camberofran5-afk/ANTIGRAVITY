@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ERP Ganadero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2E7D32;
+        }
+
+        .pin-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .pin-btn {
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pin-btn:hover {
+            background: #E8F5E9;
+            border-color: #2E7D32;
+        }
+
+        .pin-btn:active {
+            transform: scale(0.95);
+        }
+
+        .pin-display {
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 1rem;
+            margin: 1rem 0;
+            min-height: 3rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #2E7D32;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1B5E20;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2E7D32;
+            border: 2px solid #2E7D32;
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: #F44336;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="logo">🐄</div>
+        <h1>ERP Ganadero</h1>
+
+        <!-- Login View -->
+        <div id="login-view">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="tu@rancho.com">
+            </div>
+            <div class="form-group">
+                <label>PIN (4 dígitos)</label>
+                <div class="pin-display" id="pin-display">••••</div>
+                <div class="pin-pad">
+                    <button class="pin-btn" onclick="addPin('1')">1</button>
+                    <button class="pin-btn" onclick="addPin('2')">2</button>
+                    <button class="pin-btn" onclick="addPin('3')">3</button>
+                    <button class="pin-btn" onclick="addPin('4')">4</button>
+                    <button class="pin-btn" onclick="addPin('5')">5</button>
+                    <button class="pin-btn" onclick="addPin('6')">6</button>
+                    <button class="pin-btn" onclick="addPin('7')">7</button>
+                    <button class="pin-btn" onclick="addPin('8')">8</button>
+                    <button class="pin-btn" onclick="addPin('9')">9</button>
+                    <button class="pin-btn" onclick="clearPin()">⌫</button>
+                    <button class="pin-btn" onclick="addPin('0')">0</button>
+                    <button class="pin-btn" onclick="login()">✓</button>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="showRegister()">Registrarse</button>
+            <div id="login-error" class="error hidden"></div>
+        </div>
+
+        <!-- Register View -->
+        <div id="register-view" class="hidden">
+            <div class="form-group">
+                <label>Nombre del Rancho *</label>
+                <input type="text" id="ranch-name" placeholder="Rancho San José">
+            </div>
+            <div class="form-group">
+                <label>Estado *</label>
+                <select id="state" style="width:100%;padding:1rem;border:2px solid #E0E0E0;border-radius:8px;">
+                    <option value="">Seleccionar...</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="Sonora">Sonora</option>
+                    <option value="Zacatecas">Zacatecas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="reg-email" placeholder="tu@rancho.com">
+            </div>
+            <div class="form-group">
+                <label>Crear PIN (4 dígitos) *</label>
+                <div class="pin-display" id="reg-pin-display">••••</div>
+                <div class="pin-pad">
+                    <button class="pin-btn" onclick="addRegPin('1')">1</button>
+                    <button class="pin-btn" onclick="addRegPin('2')">2</button>
+                    <button class="pin-btn" onclick="addRegPin('3')">3</button>
+                    <button class="pin-btn" onclick="addRegPin('4')">4</button>
+                    <button class="pin-btn" onclick="addRegPin('5')">5</button>
+                    <button class="pin-btn" onclick="addRegPin('6')">6</button>
+                    <button class="pin-btn" onclick="addRegPin('7')">7</button>
+                    <button class="pin-btn" onclick="addRegPin('8')">8</button>
+                    <button class="pin-btn" onclick="addRegPin('9')">9</button>
+                    <button class="pin-btn" onclick="clearRegPin()">⌫</button>
+                    <button class="pin-btn" onclick="addRegPin('0')">0</button>
+                    <button class="pin-btn" onclick="register()">✓</button>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="showLogin()">Volver a Login</button>
+            <div id="reg-error" class="error hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        let pin = '';
+        let regPin = '';
+
+        function addPin(digit) {
+            if (pin.length < 4) {
+                pin += digit;
+                updatePinDisplay();
+            }
+        }
+
+        function clearPin() {
+            pin = pin.slice(0, -1);
+            updatePinDisplay();
+        }
+
+        function updatePinDisplay() {
+            document.getElementById('pin-display').textContent = pin.padEnd(4, '•');
+        }
+
+        function addRegPin(digit) {
+            if (regPin.length < 4) {
+                regPin += digit;
+                updateRegPinDisplay();
+            }
+        }
+
+        function clearRegPin() {
+            regPin = regPin.slice(0, -1);
+            updateRegPinDisplay();
+        }
+
+        function updateRegPinDisplay() {
+            document.getElementById('reg-pin-display').textContent = regPin.padEnd(4, '•');
+        }
+
+        function showRegister() {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('register-view').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('register-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+
+            if (!email || pin.length !== 4) {
+                document.getElementById('login-error').textContent = 'Email y PIN de 4 dígitos requeridos';
+                document.getElementById('login-error').classList.remove('hidden');
+                return;
+            }
+
+            // Store session
+            localStorage.setItem('user', JSON.stringify({ email, pin }));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            // Redirect to main app
+            window.location.href = 'index.html';
+        }
+
+        function register() {
+            const ranchName = document.getElementById('ranch-name').value;
+            const state = document.getElementById('state').value;
+            const email = document.getElementById('reg-email').value;
+
+            if (!ranchName || !state || !email || regPin.length !== 4) {
+                document.getElementById('reg-error').textContent = 'Todos los campos son requeridos';
+                document.getElementById('reg-error').classList.remove('hidden');
+                return;
+            }
+
+            // Store user data
+            localStorage.setItem('user', JSON.stringify({ email, pin: regPin, ranchName, state }));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            // Redirect to main app
+            window.location.href = 'index.html';
+        }
+
+        // Check if already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>
