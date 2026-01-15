@@ -1,0 +1,12 @@
+{
+  "sprint": {
+    "id": "sprint-1",
+    "name": "Sprint 1",
+    "goal": "Add individual cattle event logs with timeline and AI-powered dashboard analytics",
+    "start_date": "2026-01-12T13:16:43.268593",
+    "end_date": "2026-01-26T13:16:43.268600",
+    "status": "active"
+  },
+  "tasks": [],
+  "updated_at": "2026-01-12T13:16:43.268754"
+}
