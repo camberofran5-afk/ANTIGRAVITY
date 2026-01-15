@@ -871,20 +871,6 @@ async def delete_inventory_item(
         raise HTTPException(status_code=404, detail="Inventory item not found")
     
     return {"status": "deleted"}
-        category=item.category,
-        name=item.name,
-        quantity=item.quantity,
-        unit=item.unit,
-        unit_cost=item.unit_cost,
-        total_value=item.quantity * item.unit_cost,
-        supplier=item.supplier,
-        expiry_date=item.expiry_date,
-        min_stock=item.min_stock,
-        location=item.location,
-        created_at=datetime.now()
-    )
-    _inventory_store[item_id] = inventory_item
-    return inventory_item
 
 
 @app.put(f"{API_PREFIX}/inventory/{{item_id}}", response_model=InventoryItem)
@@ -964,10 +950,35 @@ async def create_client(
     db: Session = Depends(get_db)
 ):
     """Create client"""
-        created_at=datetime.now()
+    from .L2_foundation.client_crud_db import create_client as db_create_client
+    
+    client = db_create_client(
+        db=db,
+        ranch_id=ranch_id,
+        name=name,
+        client_type=client_type,
+        contact_name=contact_name,
+        phone=phone,
+        email=email,
+        address=address,
+        payment_terms=payment_terms,
+        notes=notes
     )
-    _clients_store[client_id] = client_obj
-    return client_obj
+    
+    logger.info("client_created", client_id=client.id, ranch_id=ranch_id)
+    
+    return {
+        "id": client.id,
+        "ranch_id": client.ranch_id,
+        "name": client.name,
+        "type": client.type,
+        "contact_name": client.contact_name,
+        "phone": client.phone,
+        "email": client.email,
+        "address": client.address,
+        "payment_terms": client.payment_terms,
+        "notes": client.notes
+    }
 
 
 @app.put(f"{API_PREFIX}/clients/{{client_id}}", response_model=Client)
@@ -1043,8 +1054,35 @@ async def create_worker(
     db: Session = Depends(get_db)
 ):
     """Create worker"""
-    _workers_store[worker_id] = worker_obj
-    return worker_obj
+    from .L2_foundation.worker_crud_db import create_worker as db_create_worker
+    from datetime import datetime
+    
+    worker = db_create_worker(
+        db=db,
+        ranch_id=ranch_id,
+        full_name=full_name,
+        position=position,
+        phone=phone,
+        email=email,
+        salary_mxn=salary_mxn,
+        hire_date=datetime.fromisoformat(hire_date).date() if hire_date else None,
+        notes=notes
+    )
+    
+    logger.info("worker_created", worker_id=worker.id, ranch_id=ranch_id)
+    
+    return {
+        "id": worker.id,
+        "ranch_id": worker.ranch_id,
+        "full_name": worker.full_name,
+        "position": worker.position,
+        "phone": worker.phone,
+        "email": worker.email,
+        "salary_mxn": worker.salary_mxn,
+        "hire_date": worker.hire_date.isoformat() if worker.hire_date else None,
+        "is_active": worker.is_active,
+        "notes": worker.notes
+    }
 
 
 @app.put(f"{API_PREFIX}/workers/{{worker_id}}", response_model=Worker)
