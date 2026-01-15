@@ -1,0 +1,51 @@
+name: Deploy Frontend to Netlify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/erp_ganadero/frontend-v2/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: projects/erp_ganadero/frontend-v2/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd projects/erp_ganadero/frontend-v2
+          npm ci
+      
+      - name: Build
+        run: |
+          cd projects/erp_ganadero/frontend-v2
+          npm run build
+      
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=projects/erp_ganadero/frontend-v2/dist --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      
+      - name: Test deployment
+        run: |
+          sleep 10
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://leafy-florentine-759293.netlify.app)
+          if [ $HTTP_CODE -ne 200 ]; then
+            echo "❌ Deployment test failed: HTTP $HTTP_CODE"
+            exit 1
+          fi
+          echo "✅ Deployment test passed: HTTP $HTTP_CODE"
