@@ -1,4 +1,4 @@
-# ERP Inteligente para Ganaderos - Estructura de Equipo Multi-Agente
+gan# ERP Inteligente para Ganaderos - Estructura de Equipo Multi-Agente
 
 ## 🎯 PROYECTO: Sistema ERP para Producción de Becerros (Ganadería Extensiva)
 

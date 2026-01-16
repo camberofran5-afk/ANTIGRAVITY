@@ -38,3 +38,8 @@ logs/
 node_modules/
 .next/
 out/
+
+# Testing Artifacts
+projects/erp_ganadero/testsprite/reports/
+projects/erp_ganadero/testsprite/test-results/
+
